@@ -25,14 +25,16 @@ output_path = '/Users/Foxy/Desktop/sorted'
 hasFace = False
 
 for filename in os.listdir(input_path):
-
+    # Console Update
     print('Scanning ' + filename)
+
     if filename.endswith(".jpg") or filename.endswith(".JPG") or filename.endswith(".png") or filename.endswith(".PNG"):
         target_image = cv2.imread((os.path.join(input_path, filename)))
         gray = cv2.cvtColor(target_image, cv2.COLOR_BGR2GRAY)
 
         # Finding Faces
         faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+
         for (x, y, w, h) in faces:
             target_image = cv2.rectangle(target_image, (x, y), (x + w, y + h), (255, 0, 0), 2)
             roi_gray = gray[y:y + h, x:x + w]
@@ -47,27 +49,31 @@ for filename in os.listdir(input_path):
                 cv2.rectangle(roi_color, (ex, ey), (ex + ew, ey + eh), (0, 255, 0), 2)
 
             if hasFace:
-                print('Face Found within Image')
+                print("Face Found within Image")
 
+
+                #  Uncomment for Confirmation of Face Detection
                 # Show User Image of the Face Detection
-                cv2.imshow('filename', target_image)
+                # cv2.imshow('filename', target_image)
                 # Wait for Key Press
-                cv2.waitKey()
-                cv2.destroyWindow('target_image')
+                # cv2.waitKey()
+                # cv2.destroyWindow('target_image')
 
                 # Move Images to new directory
                 shutil.move(input_path + '/' + filename, output_path)
                 print('File Moved to New Directory')
 
-            else:
-                print('This Image has no Face. It will not be moved')
-                cv2.imshow('filename' + 'NO FACE', target_image)
-                cv2.waitKey()
-                cv2.destroyWindow('target_image')
+                # if hasFace == False:
+                #     print("No face found within image")
 
-
+                # If No Face
+                # hasFace = False
+                # print('This Image has no Face. It will not be moved')
+                # cv2.imshow('filename' + 'NO FACE', target_image)
+                # cv2.waitKey()
+                # cv2.destroyWindow('target_image')
     else:
-        print('This file is not supported | Please convert files to .jpg or .png')
+        print("This file is not supported | Please convert files to .jpg or .png")
 
 print('All Images Scanned.')
 
